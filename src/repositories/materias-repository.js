@@ -31,4 +31,77 @@ export default class MateriasRepository {
         }
         return returnArray;
     }
+    getAllAsyncById = async (id) =>  {
+        console.log(`MateriasRepository.getByIdAsync(${id})`);
+        let returnEntity = null;
+        try {
+            const sql = `SELECT * FROM Materias WHERE id=$1`;
+            const values = [id];
+            const resultPg = await this.getDBPool().query(sql, values);
+            if (resultPg.rows.length > 0){
+                returnEntity = resultPg.rows[0];
+            }
+        } catch (error) {
+            LogHelper.logError(error);
+        } 
+        return returnEntity;
+    }
+
+     createAsync = async (entity) => {
+        console.log(`MateriasRepository.createAsync(${JSON.stringify(entity)})`);
+        let newId = 0;
+
+        try {
+            const sql = ` INSERT INTO materias (
+                            nombre              
+                        ) VALUES (
+                            $1
+                        ) RETURNING id`;
+            const values =  [   entity?.nombre              ?? ''
+                                
+                            ];
+            const resultPg = await this.getDBPool().query(sql, values);
+            newId = resultPg.rows[0].id;
+        } catch (error) {
+            LogHelper.logError(error);
+        }
+        return newId;
+    }
+   updateAsync = async (entity) => {
+        console.log(`MateriasRepository.updateAsync(${JSON.stringify(entity)})`);
+        let rowsAffected = 0;
+        let id = entity.id;
+        
+        try {
+            const previousEntity = await this.getByIdAsync(id);
+            if (previousEntity== null) return 0;
+            const sql = `UPDATE materias SET 
+                            nombre              = $2`;
+                            
+            const values =  [   id,     // $1
+                                entity?.nombre              ?? previousEntity?.nombre
+                            ];
+            const resultPg = await this.getDBPool().query(sql, values);
+
+            rowsAffected = resultPg.rowCount;
+        } catch (error) {
+            LogHelper.logError(error);
+        }
+        return rowsAffected;
+    }
+
+    deleteByIdAsync = async (id) => {
+        console.log(`MateriasRepository.deleteByIdAsync(${id})`);
+        let rowsAffected = 0;
+        
+        try {
+            const sql = `DELETE from materias WHERE id=$1`;
+            const values = [id];
+            const resultPg = await this.getDBPool().query(sql, values);
+            rowsAffected = resultPg.rowCount;
+        } catch (error) {
+            LogHelper.logError(error);
+        }
+        return rowsAffected;
+    }
 }
