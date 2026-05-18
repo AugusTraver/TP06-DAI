@@ -20,7 +20,6 @@
     
         createAsync = async (entity) => {
             console.log(`CalificacionesService.createAsync(${JSON.stringify(entity)})`);
-            await this.validarCalificacionExiste(entity.id_curso);
             const rowsAffected = await this.CalificacionesRepository.createAsync(entity);
             return rowsAffected;
         }

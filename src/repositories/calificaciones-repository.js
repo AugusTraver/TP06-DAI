@@ -65,10 +65,11 @@ export default class CalificacionesRepository {
                              $3, 
                              $4
                          ) RETURNING id`;
-            const values = [entity?.id_alumno ?? '',
-            entity?.id_materias ?? '',
-            entity?.id_nota ?? 0,
-            entity?.fecha ?? null
+            const values = [
+                entity?.id_alumno ?? 0,
+                entity?.id_materia ?? 0,
+                entity?.nota ?? 0,
+                entity?.fecha ?? new Date()
             ];
             const resultPg = await this.getDBPool().query(sql, values);
             newId = resultPg.rows[0].id;
@@ -85,7 +86,7 @@ export default class CalificacionesRepository {
         try {
             const previousEntity = await this.getByIdAsync(id);
             if (previousEntity == null) return 0;
-            const sql = `UPDATE alumnos SET 
+            const sql = `UPDATE calificaciones SET 
                                  id_alumno              = $2, 
                                  id_materia            = $3, 
                                  nota            = $4, 

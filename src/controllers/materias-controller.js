@@ -23,6 +23,7 @@ router.get('', async (req, res) => {
 router.get('/:id', async (req, res) => {
     try {
         console.log(`MateriasController.get`);
+        const id = req.params.id;
         const returnArray = await currentService.getAllAsyncById(id);
         if (returnArray != null) {
             res.status(StatusCodes.OK).json(returnArray);

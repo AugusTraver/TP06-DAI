@@ -32,10 +32,10 @@ export default class MateriasRepository {
         return returnArray;
     }
     getAllAsyncById = async (id) =>  {
-        console.log(`MateriasRepository.getByIdAsync(${id})`);
+        console.log(`MateriasRepository.getAllAsyncById(${id})`);
         let returnEntity = null;
         try {
-            const sql = `SELECT * FROM Materias WHERE id=$1`;
+            const sql = `SELECT * FROM materias WHERE id=$1`;
             const values = [id];
             const resultPg = await this.getDBPool().query(sql, values);
             if (resultPg.rows.length > 0){
@@ -45,6 +45,11 @@ export default class MateriasRepository {
             LogHelper.logError(error);
         } 
         return returnEntity;
+    }
+
+    // Backwards-compatible alias expected by other modules
+    getByIdAsync = async (id) => {
+        return await this.getAllAsyncById(id);
     }
 
      createAsync = async (entity) => {
@@ -76,7 +81,8 @@ export default class MateriasRepository {
             const previousEntity = await this.getByIdAsync(id);
             if (previousEntity== null) return 0;
             const sql = `UPDATE materias SET 
-                            nombre              = $2`;
+                            nombre              = $2
+                        WHERE id = $1`;
                             
             const values =  [   id,     // $1
                                 entity?.nombre              ?? previousEntity?.nombre

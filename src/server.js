@@ -10,14 +10,13 @@ import MateriasController from "./controllers/materias-controller.js"
 import CalificacionesController from "./controllers/calificaciones-controller.js"
 const app = express();
 const port = process.env.PORT || 3000;  // si no esta definido en el archivo .env uso el 3000.
-
-app.use("/api/materias", MateriasController);
-app.use("/api/calificaciones", CalificacionesController);
 // Agrego los Middlewares
 app.use(cors());         // Middleware de CORS
 app.use(express.json()); // Middleware para parsear y comprender JSON
 
-// Endpoints (todos los Routers)
+// Controllers / Endpoints (todos los Routers)
+app.use("/api/materias", MateriasController);
+app.use("/api/calificaciones", CalificacionesController);
 app.use("/api/alumnos", AlumnosController);
 app.use("/api/cursos", CursosController);
 
