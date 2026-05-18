@@ -3,7 +3,6 @@
         constructor() {
             console.log('Estoy en: CalificacionesService.constructor()');
             this.CalificacionesRepository = new CalificacionesRepository();
-            this.CalificacionesService = new CalificacionesService();
         }
     
         getAllAsync = async () => {
@@ -44,10 +43,9 @@
     
         validarCalificacionExiste = async (idCal) => {
             if (!idCal) return; // Early return
-    
-            const cal = await this.CalificacionesService.getByIdAsync(idCal);
+            const cal = await this.getByIdAsync(idCal);
             if (cal == null) {
-                throw new Error(`El curso con id ${idCurso} no existe.`);
+                throw new Error(`La calificación con id ${idCal} no existe.`);
             }
         }
     }

@@ -2,6 +2,8 @@ import pkg from 'pg'
 import config from './../configs/db-config.js';      // Traigo la configuracion de la base de datos.
 import LogHelper from './../helpers/log-helper.js'
 
+const { Pool } = pkg;
+
 
 
 export default class CalificacionesRepository {
@@ -31,7 +33,7 @@ export default class CalificacionesRepository {
         }
         return returnArray;
     }
-    getAllAsyncById = async (id) => {
+    getByIdAsync = async (id) => {
         console.log(`CalificacionesRepository.getByIdAsync(${id})`);
         let returnEntity = null;
         try {
