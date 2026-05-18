@@ -22,6 +22,18 @@ router.get('', async (req, res) => {
     }
 });
 
+router.get('/alumno/:idAlumno', async (req, res) => {
+    try {
+        const id = req.params.idAlumno;
+        const returnArray = await currentService.getByAlumnoAsync(id);
+        res.status(StatusCodes.OK).json(returnArray);
+    } catch (error) {
+        console.log(error);
+        const status = error.status || StatusCodes.INTERNAL_SERVER_ERROR;
+        res.status(status).send(`Error: ${error.message}`);
+    }
+});
+
 router.get('/:id', async (req, res) => {
     try {
         let id = req.params.id;

@@ -21,6 +21,11 @@ export default class MateriasService {
         const newId = await this.MateriasRepository.createAsync(entity);
         return newId;
     }
+    getByIdAsync = async (id) => {
+        console.log(`MateriasService.getByIdAsync(${id})`);
+        const returnEntity = await this.MateriasRepository.getByIdAsync(id);
+        return returnEntity;
+    }
     updateAsync = async (entity) => {
         console.log(`MateriasService.updateAsync()`);
         const returnArray = await this.MateriasRepository.updateAsync(entity);
